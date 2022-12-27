@@ -112,12 +112,13 @@ public class NamesrvStartup {
                 in.close();
             }
         }
-
+       MixAll.properties2Object(ServerUtil.commandLine2Properties(commandLine), namesrvConfig);
         if (commandLine.hasOption('p')) {
-            MixAll.printObjectProperties(null, namesrvConfig);
-            MixAll.printObjectProperties(null, nettyServerConfig);
-            MixAll.printObjectProperties(null, nettyClientConfig);
-            MixAll.printObjectProperties(null, controllerConfig);
+            MixAll.printObjectProperties(logConsole, namesrvConfig);
+            MixAll.printObjectProperties(logConsole, nettyServerConfig);
+            MixAll.printObjectProperties(logConsole, nettyClientConfig);
+            if (namesrvConfig.isEnableControllerInNamesrv()) {
+                MixAll.printObjectProperties(logConsole, controllerConfig);
             System.exit(0);
         }
 
