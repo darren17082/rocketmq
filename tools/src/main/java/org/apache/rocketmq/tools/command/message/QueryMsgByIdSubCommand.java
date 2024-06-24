@@ -50,6 +50,20 @@ public class QueryMsgByIdSubCommand implements SubCommand {
 
         printMsg(admin, msg, msgBodyCharset);
     }
+    
+       public static void queryByKey(final DefaultMQAdminExt admin, final String topic, final String key, final long startMS, final long endMs)
+        throws MQClientException, InterruptedException {
+        admin.start();
+
+        QueryResult queryResult = admin.queryMessage(topic, key, 64, startMS, endMs);
+        System.out.printf("%-50s %4s %40s%n",
+            "#Message ID",
+            "#QID",
+            "#Offset");
+        for (MessageExt msg : queryResult.getMessageList()) {
+            System.out.printf("%-50s %4d %40d%n", msg.getMsgId(), msg.getQueueId(), msg.getQueueOffset());
+        }
+    }
 
     public static void printMsg(final DefaultMQAdminExt admin, final MessageExt msg) throws IOException {
         printMsg(admin, msg, null);
